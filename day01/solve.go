@@ -10,20 +10,20 @@ import (
 
 func main() {
     text := read_file_to_slice()
-    part_one := solve_part_one(text)
+    text_as_int := slice_of_strings_to_slice_of_ints(text)
+
+    part_one := solve_part_one(text_as_int)
     fmt.Println("Answer to part 1 is", part_one)
-    part_two := solve_part_two(text)
+
+    part_two := solve_part_two(text_as_int)
     fmt.Println("Answer to part 2 is", part_two)
 }
 
-func solve_part_one(text []string) int {
-    for _, n := range text {
-        n_as_int, _ := strconv.Atoi(n)
-        for _, m := range text {
-            m_as_int, _ := strconv.Atoi(m)
-            if n_as_int + m_as_int == 2020 {
-                product := n_as_int * m_as_int
-                // fmt.Println("Answer is ", product)
+func solve_part_one(text []int) int {
+    for _, a := range text {
+        for _, b := range text {
+            if a + b == 2020 {
+                product := a * b
                 return product
             }
         }
@@ -31,16 +31,12 @@ func solve_part_one(text []string) int {
     return 0
 }
 
-func solve_part_two(text []string) int {
+func solve_part_two(text []int) int {
     for _, a := range text {
-        a_as_int, _ := strconv.Atoi(a)
         for _, b := range text {
-            b_as_int, _ := strconv.Atoi(b)
             for _, c := range text {
-                c_as_int, _ := strconv.Atoi(c)
-                if a_as_int + b_as_int + c_as_int == 2020 {
-                    product := a_as_int * b_as_int * c_as_int
-                    // fmt.Println("Answer is ", product)
+                if a + b + c == 2020 {
+                    product := a * b * c
                     return product
                 }
             }
@@ -86,4 +82,13 @@ func read_file_to_slice() []string {
     // and prints each of the slice values.
 
     return text
+}
+
+func slice_of_strings_to_slice_of_ints(slice_strings []string) []int {
+    var slice_of_ints []int
+    for _, str := range slice_strings {
+        this_int, _ := strconv.Atoi(str)
+        slice_of_ints = append(slice_of_ints, this_int)
+    }
+    return slice_of_ints
 }
