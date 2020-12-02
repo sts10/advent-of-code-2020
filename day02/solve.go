@@ -6,54 +6,59 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"strings"
 )
 
 func main() {
 	text := read_file_to_slice()
-	text_as_int := slice_of_strings_to_slice_of_ints(text)
-
-	part_one, err := solve_part_one(text_as_int)
-	// is this a good way to handle this result?
-	if err != nil {
-		fmt.Println("Error:", err)
-	} else {
-		fmt.Println("Answer to part 1 is", part_one)
+	valid_counter := 0
+	for _, line := range text {
+		if is_valid(line) {
+			valid_counter = valid_counter + 1
+		} else {
+			fmt.Println("found an invalid password")
+		}
 	}
+	fmt.Println("I found this many valid passwords", valid_counter)
+}
 
-	part_two, err := solve_part_two(text_as_int)
-	if err != nil {
-		fmt.Println("Error:", err)
+func is_valid(line string) bool {
+	criteria := strings.Split(line, ":")[0]
+	password := strings.Split(line, ": ")[1]
+	specified_letter := strings.Split(criteria, " ")[1]
+	count_range := strings.Split(criteria, " ")[0]
+	lower_bound_as_str := strings.Split(count_range, "-")[0]
+	upper_bound_as_str := strings.Split(count_range, "-")[1]
+
+	lower_bound, _ := strconv.Atoi(lower_bound_as_str)
+	upper_bound, _ := strconv.Atoi(upper_bound_as_str)
+
+	// fmt.Println("Criteria is", criteria)
+	// fmt.Println("Password is", password)
+	// fmt.Println("specified_letter is", specified_letter)
+	// fmt.Println("lower_bound is", lower_bound)
+	// fmt.Println("upper_bound is", upper_bound)
+
+	specified_letter_as_rune := []rune(specified_letter)[0]
+
+	tally := count_letter_appearances(password, specified_letter_as_rune)
+	if lower_bound <= tally && tally <= upper_bound {
+		return true
 	} else {
-		fmt.Println("Answer to part 2 is", part_two)
+		return false
 	}
 }
 
-func solve_part_one(text []int) (int, error) {
-	for _, a := range text {
-		for _, b := range text {
-			if a+b == 2020 {
-				product := a * b
-				return product, nil
-			}
-		}
-	}
-	// Don't love that I return a 0 here, even with the error...
-	// But I don't see another choice
-	return 0, fmt.Errorf("Didn't find a solution to part one")
-}
+func count_letter_appearances(str string, letter_to_count rune) int {
+	// str := "wwwwwwbwwhww"
+	appearances := 0
 
-func solve_part_two(text []int) (int, error) {
-	for _, a := range text {
-		for _, b := range text {
-			for _, c := range text {
-				if a+b+c == 2020 {
-					product := a * b * c
-					return product, nil
-				}
-			}
+	for _, char := range str {
+		if char == letter_to_count {
+			appearances = appearances + 1
 		}
 	}
-	return 0, fmt.Errorf("Didn't find a solution to part two")
+	return appearances
 }
 
 func read_file_to_slice() []string {
