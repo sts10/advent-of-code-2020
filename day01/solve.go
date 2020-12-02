@@ -91,7 +91,6 @@ func read_file_to_slice() []string {
 
 	// and then a loop iterates through
 	// and prints each of the slice values.
-
 	return text
 }
 
