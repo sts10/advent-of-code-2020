@@ -20,8 +20,6 @@ func solve_part_one(text []string) {
 	for _, line := range text {
 		if is_valid_for_part_one(line) {
 			valid_counter = valid_counter + 1
-		} else {
-			// fmt.Println("found an invalid password")
 		}
 	}
 	fmt.Println("I found this many valid passwords for part one:", valid_counter)
@@ -35,27 +33,17 @@ func is_valid_for_part_one(line string) bool {
 	lower_bound_as_str := strings.Split(count_range, "-")[0]
 	upper_bound_as_str := strings.Split(count_range, "-")[1]
 
+	// do some type transformations
 	lower_bound, _ := strconv.Atoi(lower_bound_as_str)
 	upper_bound, _ := strconv.Atoi(upper_bound_as_str)
-
-	// fmt.Println("Criteria is", criteria)
-	// fmt.Println("Password is", password)
-	// fmt.Println("specified_letter is", specified_letter)
-	// fmt.Println("lower_bound is", lower_bound)
-	// fmt.Println("upper_bound is", upper_bound)
-
 	specified_letter_as_rune := []rune(specified_letter)[0]
 
+	// count the number of times specified_letter_as_rune shows up
 	tally := count_letter_appearances(password, specified_letter_as_rune)
-	if lower_bound <= tally && tally <= upper_bound {
-		return true
-	} else {
-		return false
-	}
+	return lower_bound <= tally && tally <= upper_bound
 }
 
 func count_letter_appearances(str string, letter_to_count rune) int {
-	// str := "wwwwwwbwwhww"
 	appearances := 0
 
 	for _, char := range str {
@@ -71,8 +59,6 @@ func solve_part_two(text []string) {
 	for _, line := range text {
 		if is_valid_for_part_two(line) {
 			valid_counter = valid_counter + 1
-		} else {
-			// fmt.Println("found an invalid password")
 		}
 	}
 	fmt.Println("I found this many valid passwords for part two:", valid_counter)
@@ -135,16 +121,5 @@ func read_file_to_slice() []string {
 	// on the os.File object to close the file
 	file.Close()
 
-	// and then a loop iterates through
-	// and prints each of the slice values.
 	return text
-}
-
-func slice_of_strings_to_slice_of_ints(slice_strings []string) []int {
-	var slice_of_ints []int
-	for _, str := range slice_strings {
-		this_int, _ := strconv.Atoi(str)
-		slice_of_ints = append(slice_of_ints, this_int)
-	}
-	return slice_of_ints
 }
