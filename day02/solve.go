@@ -11,18 +11,23 @@ import (
 
 func main() {
 	text := read_file_to_slice()
-	valid_counter := 0
-	for _, line := range text {
-		if is_valid(line) {
-			valid_counter = valid_counter + 1
-		} else {
-			fmt.Println("found an invalid password")
-		}
-	}
-	fmt.Println("I found this many valid passwords", valid_counter)
+	solve_part_one(text)
+	solve_part_two(text)
 }
 
-func is_valid(line string) bool {
+func solve_part_one(text []string) {
+	valid_counter := 0
+	for _, line := range text {
+		if is_valid_for_part_one(line) {
+			valid_counter = valid_counter + 1
+		} else {
+			// fmt.Println("found an invalid password")
+		}
+	}
+	fmt.Println("I found this many valid passwords for part one:", valid_counter)
+}
+
+func is_valid_for_part_one(line string) bool {
 	criteria := strings.Split(line, ":")[0]
 	password := strings.Split(line, ": ")[1]
 	specified_letter := strings.Split(criteria, " ")[1]
@@ -59,6 +64,42 @@ func count_letter_appearances(str string, letter_to_count rune) int {
 		}
 	}
 	return appearances
+}
+
+func solve_part_two(text []string) {
+	valid_counter := 0
+	for _, line := range text {
+		if is_valid_for_part_two(line) {
+			valid_counter = valid_counter + 1
+		} else {
+			// fmt.Println("found an invalid password")
+		}
+	}
+	fmt.Println("I found this many valid passwords for part two:", valid_counter)
+}
+func is_valid_for_part_two(line string) bool {
+	criteria := strings.Split(line, ":")[0]
+	password := strings.Split(line, ": ")[1]
+	specified_letter := strings.Split(criteria, " ")[1]
+	count_range := strings.Split(criteria, " ")[0]
+	slot_one_as_str := strings.Split(count_range, "-")[0]
+	slot_two_as_str := strings.Split(count_range, "-")[1]
+
+	slot_one, _ := strconv.Atoi(slot_one_as_str)
+	slot_two, _ := strconv.Atoi(slot_two_as_str)
+
+	specified_letter_as_rune := []rune(specified_letter)[0]
+	rune_in_slot_one := []rune(password)[slot_one-1]
+	rune_in_slot_two := []rune(password)[slot_two-1]
+
+	if rune_in_slot_one == specified_letter_as_rune && rune_in_slot_two == specified_letter_as_rune {
+		// if specificed letter is in BOTH slots, it's an invalid password
+		return false
+	} else if rune_in_slot_one == specified_letter_as_rune || rune_in_slot_two == specified_letter_as_rune {
+		return true
+	} else {
+		return false
+	}
 }
 
 func read_file_to_slice() []string {
