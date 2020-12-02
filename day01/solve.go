@@ -12,37 +12,48 @@ func main() {
     text := read_file_to_slice()
     text_as_int := slice_of_strings_to_slice_of_ints(text)
 
-    part_one := solve_part_one(text_as_int)
-    fmt.Println("Answer to part 1 is", part_one)
+    part_one, err := solve_part_one(text_as_int)
+    // is this a good way to handle this result?
+    if err != nil {
+        fmt.Println("Error:", err)
+    } else {
+        fmt.Println("Answer to part 1 is", part_one)
+    }
 
-    part_two := solve_part_two(text_as_int)
-    fmt.Println("Answer to part 2 is", part_two)
+    part_two, err := solve_part_two(text_as_int)
+    if err != nil {
+        fmt.Println("Error:", err)
+    } else {
+        fmt.Println("Answer to part 2 is", part_two)
+    }
 }
 
-func solve_part_one(text []int) int {
+func solve_part_one(text []int) (int, error) {
     for _, a := range text {
         for _, b := range text {
             if a + b == 2020 {
                 product := a * b
-                return product
+                return product, nil
             }
         }
     }
-    return 0
+    // Don't love that I return a 0 here, even with the error...
+    // But I don't see another choice
+    return 0, fmt.Errorf("Didn't find a solution to part one")
 }
 
-func solve_part_two(text []int) int {
+func solve_part_two(text []int) (int, error) {
     for _, a := range text {
         for _, b := range text {
             for _, c := range text {
                 if a + b + c == 2020 {
                     product := a * b * c
-                    return product
+                    return product, nil
                 }
             }
         }
     }
-    return 0
+    return 0, fmt.Errorf("Didn't find a solution to part two")
 }
 
 func read_file_to_slice() []string {
