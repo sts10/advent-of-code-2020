@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	// "strconv"
-	// "strings"
 )
 
 func main() {
@@ -44,7 +42,7 @@ func count_tree_hits_for_given_path(column_increment int, row_increment int, ter
 	number_of_trees_hit := 0
 	current_col := 0
 	for current_row, line := range terrain {
-		// is this a row we're stopping at?
+		// is this a row we're stopping at? If row_increment divide evenly into this row number, then yes.
 		if current_row%row_increment == 0 {
 			if is_tree(current_col, line) {
 				number_of_trees_hit = number_of_trees_hit + 1
@@ -56,18 +54,11 @@ func count_tree_hits_for_given_path(column_increment int, row_increment int, ter
 }
 
 func is_tree(col_number int, line_of_terrain string) bool {
-	// this_row := terrain[row_number]
 	row_width := len(line_of_terrain)
-	space := line_of_terrain[col_number%row_width]
-	return string(space) == "#"
+	// this use of modulo deals with the endless row problem
+	this_space := line_of_terrain[col_number%row_width]
+	return string(this_space) == "#"
 }
-
-// func is_tree(row_number int, col_number int, terrain []string) bool {
-// 	this_row := terrain[row_number]
-// 	row_width := len(this_row)
-// 	space := this_row[col_number%row_width]
-// 	return string(space) == "#"
-// }
 
 func read_file_to_slice() []string {
 	// os.Open() opens specific file in
