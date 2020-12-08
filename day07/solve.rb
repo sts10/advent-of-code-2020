@@ -10,6 +10,10 @@ def get_first_order_colors(color, a_big_hash)
   return first_order_colors.uniq
 end
 
+# def given_array_find_all_first_order_colors(colors_to_find, big_hash)
+#   colors_to_find.map { |color_to_find| get_first_order_colors(color_to_find, big_hash) }.flatten
+# end
+
 rules = []
 File.open("input").each_line do |line|
   rules << line
@@ -27,14 +31,10 @@ rules.each do |rule|
   big_hash[key] = values
 end
 
-def given_array_find_all_first_order_colors(colors_to_find, big_hash)
-  colors_to_find.map { |color_to_find| get_first_order_colors(color_to_find, big_hash) }.flatten
-end
+# Start with the first order colors of the color we're looking for
+c = get_first_order_colors("shiny gold", big_hash)
 
-colors_to_find = ["shiny gold"]
-c = []
-f = given_array_find_all_first_order_colors(colors_to_find, big_hash)
-c = c + f
+# Now get the first order colors of _those_ colors
 loop do
   c_len_before = c.uniq.length()
   c.each do |color|
@@ -42,8 +42,12 @@ loop do
     c = c + f
   end
   c_len_after = c.uniq.length()
+
+  # If we didn't add any new colors, we know we're done. Can break out of loop.
   if c_len_before == c_len_after
     break
   end
 end
-puts "len is " + c.uniq.length().to_s
+
+# this use of uniq does A LOT of neccessary work for us
+puts "answer to part 1 is " + c.uniq.length().to_s
