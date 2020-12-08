@@ -29,15 +29,18 @@ def what_colors_can_be_contained_by_this_color(color, a_big_hash, carried_over_a
   end
   puts "for" + color + ": first order colors found: " + first_order_colors.to_s
 
+  if first_order_colors == []
+    return carried_over_all_colors
+  end
+
   carried_over_all_colors << first_order_colors
   first_order_colors.each do |this_color|
     # second_order_colors = what_colors_can_contain_this_color(this_color, a_big_hash)
-    if what_colors_can_be_contained_by_this_color(this_color, a_big_hash, carried_over_all_colors).include?("no other")
-      return carried_over_all_colors
-    else
-      carried_over_all_colors << what_colors_can_be_contained_by_this_color(this_color, a_big_hash, carried_over_all_colors)
-      puts "At this point, carried_over_all_colors is " + carried_over_all_colors.to_s
-    end
+    # if what_colors_can_be_contained_by_this_color(this_color, a_big_hash, carried_over_all_colors).include?("no other")
+    #   return carried_over_all_colors
+    # else
+    carried_over_all_colors << what_colors_can_be_contained_by_this_color(this_color, a_big_hash, carried_over_all_colors)
+    puts "At this point, carried_over_all_colors is " + carried_over_all_colors.to_s
   end
 end
 
@@ -62,7 +65,7 @@ end
 
 color_to_find = "shiny gold"
 # ans_colors = self.what_colors_can_contain_this_color("shiny gold", big_hash)
-ans_colors = what_colors_can_be_contained_by_this_color(color_to_find, big_hash)
+ans_colors = what_colors_can_be_contained_by_this_color(color_to_find, big_hash).flatten
 puts "ans_colors is " + ans_colors.to_s
 ans = ans_colors.length()
 puts "Part 1 ans is " + ans.to_s
