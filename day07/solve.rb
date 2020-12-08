@@ -54,7 +54,7 @@ def what_colors_can_be_contained_by_this_color(color, a_big_hash)
 end
 
 rules = []
-File.open("test_input").each_line do |line|
+File.open("input").each_line do |line|
   rules << line
 end
 
@@ -78,3 +78,30 @@ ans_colors = what_colors_can_be_contained_by_this_color(color_to_find, big_hash)
 puts "ans_colors is " + ans_colors.to_s
 ans = ans_colors.length()
 puts "Part 1 ans is " + ans.to_s
+
+puts "-------------------"
+
+def given_array_find_all_first_order_colors(colors_to_find, big_hash)
+  colors_to_find.map { |color_to_find| get_first_order_colors(color_to_find, big_hash) }.flatten
+end
+
+colors_to_find = ["shiny gold"]
+c = []
+f = given_array_find_all_first_order_colors(colors_to_find, big_hash)
+puts "f is " + f.to_s
+c = c + f
+# puts c
+loop do
+  c_len_before = c.uniq.length()
+  c.each do |color|
+    f = get_first_order_colors(color, big_hash)
+    c = c + f
+  end
+  c_len_after = c.uniq.length()
+  if c_len_before == c_len_after
+    break
+  end
+end
+# end
+puts c.uniq
+puts "len is " + c.uniq.length().to_s
