@@ -18,8 +18,8 @@
 #   end
 # end
 
-def what_colors_can_be_contained_by_this_color(color, a_big_hash, carried_over_all_colors = [])
-  # all_colors = []
+def what_colors_can_be_contained_by_this_color(color, a_big_hash)
+  all_colors = []
   first_order_colors = []
 
   a_big_hash.each do |k, v|
@@ -29,18 +29,19 @@ def what_colors_can_be_contained_by_this_color(color, a_big_hash, carried_over_a
   end
   puts "for" + color + ": first order colors found: " + first_order_colors.to_s
 
-  if first_order_colors == []
-    return carried_over_all_colors
-  end
+  # if first_order_colors == []
+  #   return all_colors
+  # end
 
-  carried_over_all_colors << first_order_colors
+  # all_colors << first_order_colors
   first_order_colors.each do |this_color|
-    # second_order_colors = what_colors_can_contain_this_color(this_color, a_big_hash)
-    # if what_colors_can_be_contained_by_this_color(this_color, a_big_hash, carried_over_all_colors).include?("no other")
-    #   return carried_over_all_colors
-    # else
-    carried_over_all_colors << what_colors_can_be_contained_by_this_color(this_color, a_big_hash, carried_over_all_colors)
-    puts "At this point, carried_over_all_colors is " + carried_over_all_colors.to_s
+    second_order_colors = what_colors_can_be_contained_by_this_color(this_color, a_big_hash)
+    if what_colors_can_be_contained_by_this_color(this_color, a_big_hash).include?("no other")
+      return carried_over_all_colors
+    else
+      all_colors << what_colors_can_be_contained_by_this_color(this_color, a_big_hash)
+      puts "At this point, all_colors is " + all_colors.to_s
+    end
   end
 end
 
