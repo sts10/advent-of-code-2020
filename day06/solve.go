@@ -8,43 +8,49 @@ import (
 
 func main() {
 	file_as_string := read_file_as_string("input")
-	// fmt.Println(file_as_string)
 	array_of_familes := strings.Split(file_as_string, "\n\n")
-	for _, family := range array_of_familes {
-		fmt.Println("----------")
-		fmt.Println(family)
-	}
+
+	// part 1
 	sum := 0
 	for _, family := range array_of_familes {
 		sum = sum + count_unique_letters(family)
 	}
 	fmt.Println("Answer to part one is", sum)
 
-	// on to part two
-	sum = 0
+	// part two
+	families_as_sub_arrays := [][]string{}
 	for _, family := range array_of_familes {
-		for _, char := range array_of_familes[0] {
-			if char != '\n' && is_letter_in_every_element(family, char) {
+		this_family_as_array := []string{}
+		for _, person := range strings.Split(family, "\n") {
+			if person != "" {
+				this_family_as_array = append(this_family_as_array, person)
+			}
+		}
+		families_as_sub_arrays = append(families_as_sub_arrays, this_family_as_array)
+	}
+	sum = 0
+	for _, family_as_array := range families_as_sub_arrays {
+		// only check each letter of the first person of each family
+		for _, target_letter := range []rune(family_as_array[0]) {
+			if is_letter_in_every_element(family_as_array, target_letter) {
 				sum++
 			}
+
 		}
 	}
 	fmt.Println("Answer for part two is", sum)
 }
 
-func is_letter_in_every_element(family string, letter rune) bool {
-	// fmt.Println("received family is", strings.TrimSuffix(family, "\n"))
-	family = strings.TrimSuffix(family, "\n")
+func is_letter_in_every_element(family []string, letter rune) bool {
 	fam_len := len(family)
 
 	letter_appearances := 0
-	for _, person := range strings.Split(family, "\n") {
+	for _, person := range family {
 		if contains_letter([]rune(person), letter) {
 			letter_appearances++
 			continue
 		}
 	}
-	fmt.Println("I thinkevery person in", family, "contains", letter)
 	return letter_appearances == fam_len
 }
 
