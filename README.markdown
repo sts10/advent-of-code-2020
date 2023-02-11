@@ -2,6 +2,8 @@
 
 I'm using [this year's Advent of Code](https://adventofcode.com/2020/) to learn some Go! Advice welcome! 
 
+**Note from Feb 10, 2023**: [Golang maintainers are discussing adding telemetry to the Go toolchain](https://github.com/golang/go/discussions/58409).
+
 ## But then...
 
 When I got to [Day 7 (Handy Haversacks)](https://adventofcode.com/2020/day/7), I caved and used Ruby, but was only able to solve part 1. That code is in this repository.
